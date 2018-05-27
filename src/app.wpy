@@ -1,74 +1,447 @@
 <style lang="less">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
+    @import "./resources/css/index.wxss";
+
+    /*阿里图库*/
+    @font-face {
+        font-family: 'iconfont'; /* project id 458757 */
+        src: url('//at.alicdn.com/t/font_458757_4t9rzq6h1n1rwwmi.eot');
+        src: url('//at.alicdn.com/t/font_458757_4t9rzq6h1n1rwwmi.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_458757_4t9rzq6h1n1rwwmi.woff') format('woff'),
+        url('//at.alicdn.com/t/font_458757_4t9rzq6h1n1rwwmi.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_458757_4t9rzq6h1n1rwwmi.svg#iconfont') format('svg');
+    }
+
+    .tn-iconfont {
+        font-family: "iconfont" !important;
+        font-size: 36 rpx;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;
+        vertical-align: text-bottom;
+    }
+
+    .icon-like::before {
+        content: "\e71a";
+    }
+
+    .icon-likes::before {
+        content: "\e71b";
+    }
+
+    .icon-comment::before {
+        content: "\e70c";
+    }
+
+    .icon-share::before {
+        content: "\e729";
+    }
+
+    .icon-time::before {
+        content: "\e735";
+    }
+
+    .icon-collection::before {
+        content: "\e725";
+    }
+
+    /* global */
+
+    view {
+        overflow: initial;
+    }
+
+    .tn-container {
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .wxParse-p {
+        margin-bottom: 15px;
+    }
+
+    /* 加载更多 */
+    .tn-loading {
+        margin: 0 5px;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-animation: weuiLoading 1s steps(12, end) infinite;
+        animation: weuiLoading 1s steps(12, end) infinite;
+        background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=) no-repeat;
+        background-size: 100%;
+    }
+
+    .tn-loadmore {
+        width: 65%;
+        margin: 1.5em auto;
+        line-height: 1.6em;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .tn-loadmore__tips {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .tn-no-comments {
+        width: 65%;
+        margin: 1.5em auto;
+        line-height: 1.6em;
+        font-size: 28 rpx;
+        text-align: center;
+        color: #666;
+    }
+
+    /* tn-panel */
+    .tn-panel {
+        background-color: #fff;
+    }
+
+    .tn-card {
+        display: flex;
+        display: -webkit-flex;
+        padding: 9px 10px;
+        border-bottom: 1 rpx solid #eaeaea;
+    }
+
+    .tn-card__thumb {
+        width: 200 rpx;
+        padding: 100 rpx 0;
+        overflow: hidden;
+        height: 0;
+    }
+
+    .tn-card__img {
+        width: 100%;
+        height: 200 rpx;
+        margin-top: -50%;
+        border: none;
+    }
+
+    .tn-card__detail {
+        display: flex;
+        display: -webkit-flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        padding-left: 16 rpx;
+    }
+
+    .tn-card__detail-title {
+        font-size: 14px;
+        color: #505050;
+        margin-bottom: 10 rpx;
+        align-self: flex-start;
+    }
+
+    .tn-card__detail-info {
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+    }
+
+    .tn-card__detail-lft, .tn-card__detail-rig {
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .tn-card__detail-like, .tn-card__detail-comment, .tn-card__detail-share,
+    .tn-card__detail-date {
+        color: #8c8c8c;
+        font-size: 28 rpx;
+        display: inline-block;
+        margin-right: 15 rpx;
+        line-height: 1;
+    }
+
+    .tn-card__detail-like.on {
+        color: red;
+    }
+
+    .tn-card__detail-like.on .icon-like::before {
+        content: "\e71b";
+    }
+
+    .tn-card__detail-share {
+        margin-right: 0;
+        padding: 0;
+        background: none !important;
+    }
+
+    .tn-card__detail-share::after {
+        border: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        line-height: 1 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* tn-article */
+
+    .tn-article {
+        padding: 40 rpx 40 rpx 92 rpx;
+    }
+
+    .tn-entry-title {
+        font-weight: bold;
+        font-size: 17pt;
+        margin-bottom: 24 rpx;
+    }
+
+    .tn-entry-meta {
+        font-size: 9pt;
+        color: #b2b2b2;
+    }
+
+    .tn-entry-meta_date, .tn-entry-meta_likes {
+        display: inline-block;
+        margin-right: 20 rpx;
+        line-height: 1;
+    }
+
+    .tn-entry-meta_likes.on {
+        color: red;
+    }
+
+    .tn-entry-meta_likes.on .icon-like::before {
+        content: "\e71b";
+    }
+
+    .tn-entry-content {
+        margin-top: 30px;
+    }
+
+    /* tn-comments */
+
+    .tn-comments {
+        margin: 40 rpx 0;
+        padding: 40 rpx 0;
+        border-top: 2 rpx solid #eaeaea;
+    }
+
+    .tn-comment-slug {
+        border-left: 2px solid #e64340;
+        padding-left: 5px;
+        font-size: 11pt;
+        line-height: 1;
+        margin-bottom: 20 rpx;
+    }
+
+    .tn-comment {
+        display: flex;
+        display: -webkit-flex;
+        padding: 40 rpx 0px;
+        border-bottom: 1 rpx solid #eaeaea;
+    }
+
+    .tn-comment-sub {
+        padding-left: 95 rpx;
+    }
+
+    .tn-comment__avatar {
+        margin-right: 20 rpx;
+    }
+
+    .tn-comment__img {
+        width: 75 rpx;
+        height: 75 rpx;
+        border-radius: 50%;
+    }
+
+    .tn-comment__detail {
+        flex: 1;
+    }
+
+    .tn-comment__detail-date {
+        font-size: 9pt;
+        color: #b2b2b2;
+    }
+
+    .tn-comment__detail-content {
+        margin-top: 20 rpx;
+        font-size: 10pt;
+    }
+
+    .tn-comment-reply {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #eee;
+        z-index: 99;
+        padding: 20 rpx 30 rpx;
+    }
+
+    .tn-comment-reply_form {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .tn-comment-reply_release {
+        flex: 1;
+        align-self: center;
+    }
+
+    .tn-comment-reply_release-text {
+        border-radius: 4px;
+        height: 34 rpx;
+        max-height: 34 rpx;
+        font-size: 30 rpx;
+        background-color: #fff;
+        border-width: 10 rpx 20 rpx;
+        border-style: solid;
+        border-color: #fff;
+        line-height: 34 rpx;
+    }
+
+    .tn-comment-reply_other {
+        align-self: center;
+        margin-left: 10 rpx;
+    }
+
+    .tn-comment-reply_submit {
+        position: relative;
+        background-color: #e71a19;
+        border-radius: 4px;
+        font-size: 30 rpx;
+        color: #fff;
+        margin-left: 10 rpx;
+        height: 34 rpx;
+        width: 80 rpx;
+        line-height: 34 rpx;
+        text-align: center;
+        border-width: 17 rpx 20 rpx;
+        border-style: solid;
+        border-color: #e71a19;
+        align-self: center;
+    }
+
+    .tn-comment-reply_submit button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 101;
+    }
+
+    .tn-comment-reply_other-item {
+        position: relative;
+        display: inline-block;
+        margin: 0 5 rpx;
+        line-height: 1;
+        vertical-align: middle;
+    }
+
+    .tn-comment-reply_other-item .tn-iconfont {
+        font-size: 50 rpx;
+        color: #515151;
+        font-weight: bold;
+    }
+
+    .tn-comment-reply_other-item .icon-collection.on::before {
+        content: "\e726";
+        color: red;
+    }
+
+    .tn-comment-reply_other-item .share-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 101;
+    }
 </style>
 
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
+  import wepy from 'wepy'
+  import 'wepy-async-function'
 
-import { setStore } from 'wepy-redux'
-import configStore from './store'
+  import {setStore} from 'wepy-redux'
+  import configStore from './store'
 
-const store = configStore()
-setStore(store)
+  const store = configStore()
+  setStore(store)
 
-export default class extends wepy.app {
-  config = {
-    pages: [
-      'pages/index'
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/index',
+        'pages/member',
+        'pages/single'
+      ],
+      window: {
+        navigationBarBackgroundColor: '#e71a19',
+        navigationBarTitleText: '熊熊的小站',
+        navigationBarTextStyle: '#fff',
+        backgroundTextStyle: '#fff',
+        backgroundColor: '#e71a19',
+        enablePullDownRefresh: true
+      },
+      tabBar: {
+        color: '#000',
+        selectedColor: '#097c25',
+        backgroundColor: '#fff',
+        list: [
+          {
+            pagePath: 'pages/index',
+            text: '概览',
+            iconPath: './resources/icons/home.png',
+            selectedIconPath: './resources/icons/home-on.png'
+          },
+          {
+            pagePath: 'pages/member',
+            text: '我的',
+            iconPath: './resources/icons/member.png',
+            selectedIconPath: './resources/icons/member-on.png'
+          }
+        ]
+      },
+      debug: true
     }
-  }
 
-  globalData = {
-    userInfo: null
-  }
-
-  constructor () {
-    super()
-    this.use('requestfix')
-  }
-
-  onLaunch() {
-    this.testAsync()
-  }
-
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
-
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+    globalData = {
+      token: '',
+      userID: '',
+      userInfo: ''
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
+
+    constructor() {
+      super()
+      this.use('requestfix')
+      this.use('promisify')
+    }
+
+    onLaunch() {
+      const self = this
+
+      // 查看用户是否登录
+      if (wepy.getStorageSync('userID') && wepy.getStorageSync('token')) {
+        this.globalData.token = wepy.getStorageSync('token')
+        this.globalData.userID = wepy.getStorageSync('userID')
       }
-    })
+
+      // 查看是否授权
+      wepy.getSetting((res) => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wepy.getUserInfo((resData) => {
+            self.globalData.userInfo = resData.userInfo
+          })
+        }
+      })
+    }
   }
-}
 </script>

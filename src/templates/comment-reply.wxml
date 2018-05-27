@@ -1,0 +1,29 @@
+<!--
+  focus: boolean
+  showReplyBtn: boolean
+  showReplyOpe: boolean
+-->
+<template name="tnCommentReply">
+    <view class="tn-comment-reply">
+        <form bindsubmit="commentSubmit">
+            <view class="tn-comment-reply_form">
+                <view class="tn-comment-reply_release">
+                    <input class="tn-comment-reply_release-text" name="comment" value="{{commentReplyTem.comment}}" fixed="true" maxlength="-1" focus="{{commentReplyTem.focus}}" cursor-spacing="15" placeholder="{{commentReplyTem.placeholder == '' ? '在这儿回复' : commentReplyTem.placeholder}}" bindinput="replyInputFocus" bindblur="replyInputBlurFocus"/>
+					<input name="comment_parent" value="{{commentReplyTem.parent}}" hidden="true"></input>
+                </view>
+                <view class="tn-comment-reply_submit" hidden="{{!commentReplyTem.focus}}">
+                    发送<button formType="submit"></button>
+                </view>
+                <view class="tn-comment-reply_other" hidden="{{commentReplyTem.focus}}">
+                    <view class="tn-comment-reply_other-item" bindtap="postCollection">
+                        <span class="tn-iconfont icon-collection {{commentReplyTem.is_collection ? 'on' : ''}}"></span>
+                    </view>
+                    <view class="tn-comment-reply_other-item">
+                        <span class="tn-iconfont icon-share"></span>
+                        <button class="share-button" open-type="share"></button>
+                    </view>
+                </view>
+            </view>
+        </form>
+    </view>
+</template>

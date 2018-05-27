@@ -1,0 +1,297 @@
+<style>
+</style>
+
+<template>
+    <import src="../wxParse/wxParse.wxml"/>
+    <import src="../templates/comment-list.wxml"/>
+    <import src="../templates/comment-reply.wxml"/>
+
+    <view class="tn-container">
+        <view class="tn-article">
+            <view class="tn-entry-title">{{detail.title.rendered}}</view>
+            <view class="tn-entry-meta">
+                <view class="tn-entry-meta_date"><span class="tn-iconfont icon-time"></span>{{detail.date}}</view>
+                <view class="tn-entry-meta_likes {{is_likes ? 'on' : ''}}" bindtap="postLike">
+                    <span class="tn-iconfont icon-like"></span>{{likes_num}}
+                </view>
+            </view>
+            <view class="tn-entry-content">
+                <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+            </view>
+
+            <template is="tnCommentList" data="{{commentItemsTem}}"></template>
+            <template is="tnCommentReply" data="{{commentReplyTem}}"></template>
+        </view>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import http from '../utils/http.js'
+  import route from '../utils/route.js'
+  import config from '../utils/config.js'
+  import util from '../utils/utils.js'
+  import wxParse from '../wxParse/wxParse.js'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '文章详情'
+    }
+
+    data = {
+      postId: '',
+      likes_num: 0,
+      is_likes: 0,
+      detail: {},
+      commentItemsTem: {
+        postComments: {}
+      },
+      commentReplyTem: {
+        comment: '',
+        placeholder: '',
+        parent: '',
+        focus: false,
+        is_collection: 0
+      }
+    }
+
+    methods = {}
+
+    onLoad(options) {
+      const self = this
+
+      self.postId = options.postId
+      self.fetchSingle(options.postId)
+    }
+
+    onShareAppMessage() {
+      const self = this
+
+      return {
+        title: '来自' + config.getSitename + '的分享：' + self.data.detail.title.rendered,
+        path: 'pages/single?postId=' + self.data.detail.id,
+        success: function (res) {
+          wepy.showToast({
+            title: '分享成功'
+          })
+        },
+        fail: function (xhr) {
+          wepy.showToast({
+            title: '分享失败'
+          })
+        }
+      }
+    }
+
+    fetchSingle(postId) {
+      const self = this
+      const userid = self.$parent.globalData.userID
+
+      // Get post content by postId
+      http.get(route.getPostById(postId)).then((resData) => {
+        const d = new Date(resData.date)
+        resData.date = d.toLocaleDateString()
+
+        self.likes_num = resData._tn_likes.length
+        self.is_likes = resData._tn_likes.indexOf(userid) === -1 ? 0 : 1
+        self.detail = resData
+        self.wxParseData = wxParse.wxParse('article', 'html', resData.content.rendered, self, 5)
+        self.commentReplyTem = {
+          is_collection: resData._tn_collection.indexOf(userid) === -1 ? 0 : 1,
+          placeholder: ''
+        }
+        self.fetchComments()
+      })
+    }
+
+    /**
+     * 获取评论列表
+     */
+    fetchComments(e) {
+      const self = this
+
+      http.get(route.getCommentsList(self.data.postId)).then((resData) => {
+        self.commentItemsTem = {
+          postComments: util.buildTree(resData.map(function (item, index, array) {
+            const d = new Date(item.date)
+            item.date = d.toLocaleDateString()
+            item.content.rendered = util.removeHTML(item.content.rendered)
+
+            return item
+          }))
+        }
+      })
+    }
+
+    /**
+     * 点击用户名创建子评论
+     */
+    replyParent(e) {
+      const self = this
+      const userid = self.$parent.globalData.userId
+      const parent = e.currentTarget.dataset.commentId
+      const author = e.currentTarget.dataset.authorName
+      const authorId = e.currentTarget.dataset.authorId
+      const isCollection = self.data.commentReplyTem.is_collection
+
+      if (userid === authorId) {
+        // 显示操作菜单
+        wepy.showActionSheet({
+          itemList: ['删除'],
+          success: function (res) {
+            if (res.tapIndex === 0) {
+              // 点击删除按钮
+              const data = {
+                force: true
+              }
+
+              http.delete(route.getDeleteComments(parent), data).then((resData) => {
+                // 重新渲染评论
+                self.fetchComments()
+
+                wepy.showToast({
+                  title: '删除成功'
+                })
+              })
+            }
+          },
+          fail: function (res) {
+            console.log(res.errMsg)
+          }
+        })
+      } else {
+        self.commentReplyTem = {
+          comment: '',
+          placeholder: '回复' + author + ':',
+          parent: parent,
+          focus: true,
+          is_collection: isCollection
+        }
+      }
+    }
+
+    /**
+     * 监听输入框输入文字
+     */
+    replyInputFocus(e) {
+      const self = this
+      const parent = self.data.commentReplyTem.parent
+      const placeholder = self.data.commentReplyTem.placeholder
+      const isCollection = self.data.commentReplyTem.is_collection
+      const focus = e.detail.value
+
+      self.commentReplyTem = {
+        comment: e.detail.value,
+        placeholder: placeholder,
+        parent: parent,
+        focus: focus,
+        is_collection: isCollection
+      }
+    }
+
+    /**
+     * 评论输入框失去焦点
+     */
+    replyInputBlurFocus(e) {
+      const self = this
+      const comment = self.data.commentReplyTem.comment
+      const parent = comment ? self.data.commentReplyTem.parent : ''
+      const placeholder = comment ? self.data.commentReplyTem.placeholder : ''
+      const isCollection = self.data.commentReplyTem.is_collection
+      const focus = comment
+
+      self.commentReplyTem = {
+        comment: comment,
+        placeholder: placeholder,
+        parent: parent,
+        focus: focus,
+        is_collection: isCollection
+      }
+    }
+
+    commentSubmit(e) {
+      const self = this
+      const data = {
+        post: self.data.postId,
+        parent: e.detail.value.comment_parent ? e.detail.value.comment_parent : 0,
+        author: self.$parent.globalData.userID,
+        author_name: self.$parent.globalData.userInfo.nickName,
+        content: e.detail.value.comment
+      }
+
+      // 隐藏发送按钮，init
+      const isCollection = self.data.commentReplyTem.is_collection
+      self.commentReplyTem = {
+        comment: '',
+        placeholder: '',
+        parent: '',
+        focus: false,
+        is_collection: isCollection
+      }
+
+      http.put(route.getPostComments(), data).then((resData) => {
+        wepy.showToast({
+          title: '回复成功'
+        })
+
+        // 重新渲染评论
+        self.fetchComments()
+      })
+    }
+
+    /**
+     * 文章点赞
+     * @param e
+     */
+    postLike(e) {
+      const self = this
+      const userid = self.$parent.globalData.userID
+      const postId = self.data.postId
+      const data = {
+        '_tn_likes': userid
+      }
+
+      http.put(route.getPostById(postId), data).then((resData) => {
+        if (resData._tn_likes.indexOf(userid) === -1) {
+          self.likes_num = resData._tn_likes.length
+          self.is_likes = 0
+        } else {
+          self.likes_num = resData._tn_likes.length
+          self.is_likes = 1
+          wepy.showToast({
+            title: '点赞成功'
+          })
+        }
+      })
+    }
+
+    /**
+     * 文章收藏
+     * @param e
+     */
+    postCollection(e) {
+      const self = this
+      const userid = self.$parent.globalData.userID
+      const postId = self.data.postId
+      const data = {
+        '_tn_collection': userid
+      }
+
+      http.put(route.getPostById(postId), data).then((resData) => {
+        if (resData._tn_collection.indexOf(userid) === -1) {
+          // 取消收藏成功
+          self.commentReplyTem = {
+            is_collection: 0
+          }
+        } else {
+          self.commentReplyTem = {
+            is_collection: 1
+          }
+          wepy.showToast({
+            title: '收藏成功'
+          })
+        }
+      })
+    }
+  }
+</script>

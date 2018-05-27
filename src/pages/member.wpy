@@ -1,0 +1,31 @@
+<style>
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // import http from '../utils/http.js'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '文章详情'
+    }
+
+    data = {}
+
+    methods = {}
+
+    onLoad(options) {
+      const self = this
+
+      self.setData({
+        post_id: options.post_id
+      })
+      self.fetchSingle(options.post_id)
+    }
+  }
+</script>

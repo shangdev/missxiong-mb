@@ -1,0 +1,32 @@
+<!--
+  postComments: {}
+-->
+<import src="./comment-list-sub.wxml"/>
+
+<template name="tnCommentList">
+    <view class='tn-comments'>
+        <view class="tn-comment-slug">相关评论</view>
+        <view class="tn-comment-items">
+            <view class="tn-panel">
+                <block wx:key="id" wx:for="{{commentItemsTem.postComments}}">
+                    <view class="tn-comment  tn-comment-level_1" bindtap="replyParent" data-comment-id="{{item.id}}" data-author-name="{{item.author_name}}" data-author-id="{{item.author}}">
+						<view class="tn-comment__avatar">
+							<image class="tn-comment__img" src="{{item.avatar}}"></image>
+						</view>
+						<view class="tn-comment__detail">
+							<view class="tn-comment__detail-info">
+								<view class="tn-comment__detail-author">{{item.author_name}}</view>
+								<view class="tn-comment__detail-date">{{item.date}}</view>
+							</view>
+							<view class="tn-comment__detail-content">{{item.content.rendered}}</view>
+						</view>
+					</view>
+					<block wx:if="{{item.children.length > 0}}">
+						<template is="tnCommentListSub" data="{{postCommentsSub: item.children}}"></template>
+					</block>
+                </block>
+				<view class="tn-no-comments" hidden="{{commentItemsTem.postComments == '' ? false: true}}">暂无内容...</view>
+            </view>
+        </view>
+    </view>
+</template>

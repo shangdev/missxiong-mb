@@ -1,0 +1,19 @@
+<!--
+  item.children: {}
+-->
+<template name="tnCommentListSub">
+    <block wx:key="{{id}}" wx:for="{{postCommentsSub}}">
+        <view class="tn-comment tn-comment-sub" bindtap="replyParent" data-comment-id="{{item.id}}" data-author-name="{{item.author_name}}" data-author-id="{{item.author}}">
+            <view class="tn-comment__avatar">
+                <image class="tn-comment__img" src="{{item.avatar}}"></image>
+            </view>
+            <view class="tn-comment__detail">
+                <view class="tn-comment__detail-info">
+                    <view class="tn-comment__detail-author">{{item.author_name}}</view>
+                    <view class="tn-comment__detail-date">{{item.date}}</view>
+                </view>
+                <view class="tn-comment__detail-content">{{item.content.rendered}}</view>
+            </view>
+        </view>
+    </block>
+</template>
