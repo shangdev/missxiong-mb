@@ -22,7 +22,7 @@
                 <view class="tn-card">
                     <view class="tn-card__thumb">
                         <image class="tn-card__img"
-                               src="{{item.thumbnail ? item.thumbnail : '/assets/images/seo-banner.jpg'}}"></image>
+                               src="{{item.thumbnail ? item.thumbnail : '../resources/images/sample-100x100.jpg'}}"></image>
                     </view>
                     <view class="tn-card__detail">
                         <view class="tn-card__detail-title" id="{{item.id}}" bindtap="postDetail">
@@ -69,7 +69,7 @@
 
     data = {
       imgUrls: [
-        '../resources/images/seo-banner.jpg'
+        '../resources/images/sample.jpg'
       ],
       indicatorDots: false,
       autoplay: false,
@@ -82,20 +82,20 @@
 
     methods = {}
 
-    onLoad() {
+    async onLoad() {
       const self = this
 
-      if (self.$parent.globalData.userID === '' && self.$parent.globalData.token === '') {
-        auth.login()
-      }
+      // 检查是否登录，没有则登录
+      await auth.checkAuth()
 
-      self.getPosts()
+      // 获取最新文章
+      await self.getPosts()
     }
 
     /**
      * 分享
      */
-    onShareAppMessage (e) {
+    onShareAppMessage(e) {
       return {
         title: '来自' + config.getSitename + '的分享',
         path: 'pages/single',
@@ -117,7 +117,6 @@
      */
     getPosts() {
       const self = this
-      const userid = self.$parent.globalData.userID
 
       http.get(route.getPosts(self.data.currentPage)).then((res) => {
         if (res.length < config.getPageCount) {
@@ -128,10 +127,10 @@
           const d = new Date(item.date)
           item.date = d.toLocaleDateString()
           item.likes_num = item._tn_likes.length
-          item.is_likes = item._tn_likes.indexOf(userid) === -1 ? 0 : 1
 
           return item
         })
+        self.$apply()
       })
     }
 
@@ -139,7 +138,7 @@
      * 跳转到文章详情
      * @param e
      */
-    postDetail (e) {
+    postDetail(e) {
       const postId = e.currentTarget.id
 
       // Redirect single page
@@ -152,7 +151,7 @@
      * 文章点赞
      * @param e
      */
-    postLike (e) {
+    postLike(e) {
       const self = this
       const userid = self.$parent.globalData.userID
       const postId = e.currentTarget.id

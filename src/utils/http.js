@@ -27,28 +27,12 @@ export default class http {
     return new Promise((resolve, reject) => {
       wepy.request(params).then((res) => {
         wepy.hideLoading()
-
-        if (self.isSuccess(res)) {
-          resolve(res.data)
-        }
-        reject(self.requestException(res))
+        resolve(res.data)
       }).catch((err) => {
         wepy.hideLoading()
         reject(err)
       })
     })
-  }
-
-  /**
-   * 判断请求是否成功
-   * @param res
-   * @returns {boolean}
-   */
-  static isSuccess(res) {
-    if (res.statusCode !== 200) {
-      return false
-    }
-    return true
   }
 
   /**

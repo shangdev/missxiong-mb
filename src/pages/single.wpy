@@ -101,6 +101,7 @@
           placeholder: ''
         }
         self.fetchComments()
+        self.$apply()
       })
     }
 
@@ -120,6 +121,7 @@
             return item
           }))
         }
+        self.$apply()
       })
     }
 
@@ -209,6 +211,9 @@
       }
     }
 
+    /**
+     * 提交评论
+     */
     commentSubmit(e) {
       const self = this
       const data = {
@@ -229,7 +234,7 @@
         is_collection: isCollection
       }
 
-      http.put(route.getPostComments(), data).then((resData) => {
+      http.post(route.getPostComments(), data).then((resData) => {
         wepy.showToast({
           title: '回复成功'
         })

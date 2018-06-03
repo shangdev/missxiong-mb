@@ -13,7 +13,7 @@
 
     .tn-iconfont {
         font-family: "iconfont" !important;
-        font-size: 36 rpx;
+        font-size: 18px;
         font-style: normal;
         -webkit-font-smoothing: antialiased;
         -webkit-text-stroke-width: 0.2px;
@@ -90,7 +90,7 @@
         width: 65%;
         margin: 1.5em auto;
         line-height: 1.6em;
-        font-size: 28 rpx;
+        font-size: 14px;
         text-align: center;
         color: #666;
     }
@@ -104,19 +104,19 @@
         display: flex;
         display: -webkit-flex;
         padding: 9px 10px;
-        border-bottom: 1 rpx solid #eaeaea;
+        border-bottom: 1rpx solid #eaeaea;
     }
 
     .tn-card__thumb {
-        width: 200 rpx;
-        padding: 100 rpx 0;
+        width: 100px;
+        padding: 50px 0;
         overflow: hidden;
         height: 0;
     }
 
     .tn-card__img {
         width: 100%;
-        height: 200 rpx;
+        height: 100px;
         margin-top: -50%;
         border: none;
     }
@@ -127,13 +127,13 @@
         flex-direction: column;
         justify-content: space-between;
         flex: 1;
-        padding-left: 16 rpx;
+        padding-left: 8px;
     }
 
     .tn-card__detail-title {
         font-size: 14px;
         color: #505050;
-        margin-bottom: 10 rpx;
+        margin-bottom: 20px;
         align-self: flex-start;
     }
 
@@ -151,9 +151,9 @@
     .tn-card__detail-like, .tn-card__detail-comment, .tn-card__detail-share,
     .tn-card__detail-date {
         color: #8c8c8c;
-        font-size: 28 rpx;
+        font-size: 14px;
         display: inline-block;
-        margin-right: 15 rpx;
+        margin-right: 15rpx;
         line-height: 1;
     }
 
@@ -184,13 +184,13 @@
     /* tn-article */
 
     .tn-article {
-        padding: 40 rpx 40 rpx 92 rpx;
+        padding: 40rpx 40rpx 92rpx;
     }
 
     .tn-entry-title {
         font-weight: bold;
         font-size: 17pt;
-        margin-bottom: 24 rpx;
+        margin-bottom: 24rpx;
     }
 
     .tn-entry-meta {
@@ -200,7 +200,7 @@
 
     .tn-entry-meta_date, .tn-entry-meta_likes {
         display: inline-block;
-        margin-right: 20 rpx;
+        margin-right: 20rpx;
         line-height: 1;
     }
 
@@ -219,9 +219,9 @@
     /* tn-comments */
 
     .tn-comments {
-        margin: 40 rpx 0;
-        padding: 40 rpx 0;
-        border-top: 2 rpx solid #eaeaea;
+        margin: 40rpx 0;
+        padding: 40rpx 0;
+        border-top: 2rpx solid #eaeaea;
     }
 
     .tn-comment-slug {
@@ -229,27 +229,27 @@
         padding-left: 5px;
         font-size: 11pt;
         line-height: 1;
-        margin-bottom: 20 rpx;
+        margin-bottom: 20rpx;
     }
 
     .tn-comment {
         display: flex;
         display: -webkit-flex;
-        padding: 40 rpx 0px;
-        border-bottom: 1 rpx solid #eaeaea;
+        padding: 40rpx 0px;
+        border-bottom: 1rpx solid #eaeaea;
     }
 
     .tn-comment-sub {
-        padding-left: 95 rpx;
+        padding-left: 95rpx;
     }
 
     .tn-comment__avatar {
-        margin-right: 20 rpx;
+        margin-right: 20rpx;
     }
 
     .tn-comment__img {
-        width: 75 rpx;
-        height: 75 rpx;
+        width: 75rpx;
+        height: 75rpx;
         border-radius: 50%;
     }
 
@@ -263,7 +263,7 @@
     }
 
     .tn-comment__detail-content {
-        margin-top: 20 rpx;
+        margin-top: 20rpx;
         font-size: 10pt;
     }
 
@@ -274,7 +274,7 @@
         right: 0;
         background-color: #eee;
         z-index: 99;
-        padding: 20 rpx 30 rpx;
+        padding: 20rpx 30rpx;
     }
 
     .tn-comment-reply_form {
@@ -289,33 +289,33 @@
 
     .tn-comment-reply_release-text {
         border-radius: 4px;
-        height: 34 rpx;
-        max-height: 34 rpx;
-        font-size: 30 rpx;
+        height: 34rpx;
+        max-height: 34rpx;
+        font-size: 30rpx;
         background-color: #fff;
-        border-width: 10 rpx 20 rpx;
+        border-width: 10rpx 20rpx;
         border-style: solid;
         border-color: #fff;
-        line-height: 34 rpx;
+        line-height: 34rpx;
     }
 
     .tn-comment-reply_other {
         align-self: center;
-        margin-left: 10 rpx;
+        margin-left: 10rpx;
     }
 
     .tn-comment-reply_submit {
         position: relative;
         background-color: #e71a19;
         border-radius: 4px;
-        font-size: 30 rpx;
+        font-size: 15px;
         color: #fff;
-        margin-left: 10 rpx;
-        height: 34 rpx;
-        width: 80 rpx;
-        line-height: 34 rpx;
+        margin-left: 10rpx;
+        height: 34rpx;
+        width: 80rpx;
+        line-height: 34rpx;
         text-align: center;
-        border-width: 17 rpx 20 rpx;
+        border-width: 17rpx 20rpx;
         border-style: solid;
         border-color: #e71a19;
         align-self: center;
@@ -336,13 +336,13 @@
     .tn-comment-reply_other-item {
         position: relative;
         display: inline-block;
-        margin: 0 5 rpx;
+        margin: 0 5rpx;
         line-height: 1;
         vertical-align: middle;
     }
 
     .tn-comment-reply_other-item .tn-iconfont {
-        font-size: 50 rpx;
+        font-size: 25px;
         color: #515151;
         font-weight: bold;
     }
@@ -368,8 +368,9 @@
 <script>
   import wepy from 'wepy'
   import 'wepy-async-function'
+  import auth from './utils/auth.js'
 
-  import {setStore} from 'wepy-redux'
+  import { setStore } from 'wepy-redux'
   import configStore from './store'
 
   const store = configStore()
@@ -387,23 +388,22 @@
         navigationBarTitleText: '熊熊的小站',
         navigationBarTextStyle: '#fff',
         backgroundTextStyle: '#fff',
-        backgroundColor: '#e71a19',
-        enablePullDownRefresh: true
+        backgroundColor: '#e71a19'
       },
       tabBar: {
         color: '#000',
-        selectedColor: '#097c25',
+        selectedColor: '#e71a19',
         backgroundColor: '#fff',
         list: [
           {
             pagePath: 'pages/index',
-            text: '概览',
+            text: '首页',
             iconPath: './resources/icons/home.png',
             selectedIconPath: './resources/icons/home-on.png'
           },
           {
             pagePath: 'pages/member',
-            text: '我的',
+            text: '关于',
             iconPath: './resources/icons/member.png',
             selectedIconPath: './resources/icons/member-on.png'
           }
@@ -414,7 +414,6 @@
 
     globalData = {
       token: '',
-      userID: '',
       userInfo: ''
     }
 
@@ -427,21 +426,19 @@
     onLaunch() {
       const self = this
 
-      // 查看用户是否登录
-      if (wepy.getStorageSync('userID') && wepy.getStorageSync('token')) {
-        this.globalData.token = wepy.getStorageSync('token')
-        this.globalData.userID = wepy.getStorageSync('userID')
-      }
-
-      // 查看是否授权
-      wepy.getSetting((res) => {
+      // 查看是否授权，如果授权则获取用户基本信息
+      wepy.getSetting().then((res) => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wepy.getUserInfo((resData) => {
-            self.globalData.userInfo = resData.userInfo
+          wepy.getUserInfo((response) => {
+            wepy.setStorageSync('userInfo', response.userInfo)
+            self.globalData.userInfo = response.userInfo
           })
         }
       })
+
+      // 登录态
+      auth.auth()
     }
   }
 </script>
