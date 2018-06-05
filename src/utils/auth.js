@@ -1,5 +1,6 @@
 import wepy from 'wepy'
 import route from './route.js'
+import http from './http.js'
 
 const auth = function () {
   // 检查登录是否过期，过期则再次登录，未过期则获取本地storage中存储的token
@@ -57,7 +58,22 @@ const checkAuth = function () {
   }
 }
 
+const getUserInfo = function () {
+  return new Promise((resolve, reject) => {
+    http.get(route.getUserInfo()).then((res) => {
+      wepy.$instance.globalData.userInfo = res
+      wepy.setStorageSync('userInfo', res)
+      resolve(res)
+    }).catch((err) => {
+      reject(err)
+    })
+  }).catch((err) => {
+    reject(err)
+  })
+}
+
 module.exports = {
   auth: auth,
-  checkAuth: checkAuth
+  checkAuth: checkAuth,
+  getUserInfo: getUserInfo
 }

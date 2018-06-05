@@ -403,7 +403,7 @@
           },
           {
             pagePath: 'pages/member',
-            text: '关于',
+            text: '关于小站',
             iconPath: './resources/icons/member.png',
             selectedIconPath: './resources/icons/member-on.png'
           }
@@ -424,20 +424,7 @@
     }
 
     onLaunch() {
-      const self = this
-
-      // 查看是否授权，如果授权则获取用户基本信息
-      wepy.getSetting().then((res) => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wepy.getUserInfo((response) => {
-            wepy.setStorageSync('userInfo', response.userInfo)
-            self.globalData.userInfo = response.userInfo
-          })
-        }
-      })
-
-      // 登录态
+      // 用户登录
       auth.auth()
     }
   }

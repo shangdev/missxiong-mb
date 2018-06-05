@@ -7,6 +7,9 @@ module.exports = {
   getJwtToken: function () {
     return config.getDomain + '/wp-json/jwt-auth/v1/token'
   },
+  getUserInfo: function () {
+    return config.getDomain + '/wp-json/wp/v2/users/me'
+  },
   getPosts: function (page = 1, perPage = config.getPageCount) {
     const pages = '?per_page=' + perPage + '&page=' + page
     return config.getDomain + '/wp-json/wp/v2/posts/' + pages

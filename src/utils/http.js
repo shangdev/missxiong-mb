@@ -3,8 +3,6 @@ import wepy from 'wepy'
 // HTTP工具类
 export default class http {
   static request(method, url, data = {}, header = {}) {
-    const self = this
-
     // 如果对象为空，给header一个默认值
     if (Object.keys(header).length === 0) {
       header = {
