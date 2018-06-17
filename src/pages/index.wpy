@@ -120,7 +120,7 @@
      */
     getPosts() {
       const self = this
-      const userid = self.$parent.globalData.userInfo.id;
+      const userid = self.$parent.globalData.userInfo.id
 
       http.get(route.getPosts(self.data.currentPage)).then((res) => {
         if (res.length < config.getPageCount) {
@@ -131,8 +131,7 @@
           const d = new Date(item.date)
           item.date = d.toLocaleDateString()
           item.likes_num = item._tn_likes.length
-          item.is_likes = item._tn_likes.indexOf(userid) === -1 ? 0 : 1;
-            
+          item.is_likes = item._tn_likes.indexOf(userid) === -1 ? 0 : 1
           return item
         })
         self.$apply()

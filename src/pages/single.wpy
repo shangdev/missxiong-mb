@@ -226,6 +226,7 @@
         author_name: self.$parent.globalData.userInfo.nickName,
         content: e.detail.value.comment
       }
+      console.log(data)
 
       // 隐藏发送按钮，init
       const isCollection = self.data.commentReplyTem.is_collection
@@ -245,6 +246,8 @@
         // 重新渲染评论
         self.fetchComments()
         self.$apply()
+      }).catch((err) => {
+        console.log(err)
       })
     }
 
